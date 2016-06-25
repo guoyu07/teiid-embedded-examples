@@ -21,15 +21,22 @@
  */
 package org.teiid.example;
 
-import org.teiid.runtime.EmbeddedServer;
+import org.jboss.teiid.connectors.hdfs.HDFSConnectionImpl;
 import org.jboss.teiid.connectors.hdfs.HDFSManagedConnectionFactory;
+import org.teiid.runtime.EmbeddedServer;
 
-@SuppressWarnings("nls")
 public class TeiidEmbeddedHDFSDataSource {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		EmbeddedServer server = new EmbeddedServer();
 		HDFSManagedConnectionFactory managedconnectionFactory = new HDFSManagedConnectionFactory();
+		managedconnectionFactory.setHost("localhost");
+		managedconnectionFactory.setPort(9000);
+		
+		HDFSConnectionImpl conn = new HDFSConnectionImpl(managedconnectionFactory);
+		
+		String fileContent = conn.readFromFile("sample.txt");
+		System.out.println("RESULT... " + fileContent);
 	}
 
 }
